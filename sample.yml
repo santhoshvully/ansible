@@ -1,0 +1,22 @@
+---
+- hosts: kuldeep
+ become: yes
+ tasks:
+  - name: replace string example
+   replace:
+    path: "/root/apps/servername.ini"
+    regexp: 'server\.id\:abc'
+    replace: "server.id:santhosh"
+    backup: yes
+  - name: checking if a file exists
+   stat:
+    path: "/root/apps/test.txt"
+   register: file_data
+  - name: create a file if it doesnt exist
+   file:
+    path: "/root/apps/test.txt"
+    state: touch
+    mode: 0744
+    owner: root
+    group: root
+   when: file_data.stat.exists == false
